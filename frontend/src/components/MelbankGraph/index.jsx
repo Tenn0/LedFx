@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Line } from 'react-chartjs-2';
+import { Line } from '@iftek/react-chartjs-3';
 import { createWebSocket } from 'utils/api/websocket';
 
 const styles = theme => ({
@@ -83,18 +83,10 @@ class PixelColorGraph extends React.Component {
     handleMessage = e => {
         var chartData = this.state.chartData;
         var messageData = JSON.parse(e.data);
-        chartData.labels = messageData.frequencies;
-        chartData.datasets[0].data = messageData.melbank;
 
         // Adjust the axes based on the max
         var melbankMax = Math.max.apply(Math, messageData.melbank);
         var chartOptions = this.state.chartOptions;
-        chartOptions.scales.yAxes[0].ticks.min = 0;
-        chartOptions.scales.yAxes[0].ticks.max = Math.max(
-            chartOptions.scales.yAxes[0].ticks.max,
-            melbankMax
-        );
-        chartOptions.scales.yAxes[0].ticks.stepSize = chartOptions.scales.yAxes[0].ticks.max / 4;
 
         this.setState({ chartData: chartData, chartOptions: chartOptions });
     };

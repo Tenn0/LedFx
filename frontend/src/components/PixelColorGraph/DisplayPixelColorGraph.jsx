@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Line } from 'react-chartjs-2';
+import { Line } from '@iftek/react-chartjs-3';
 import { createWebSocket } from 'utils/api/websocket';
 import Box from '@material-ui/core/Box';
 
@@ -38,8 +38,10 @@ class DisplayPixelColorGraph extends React.Component {
             chartData: {
                 labels: Array.apply(null, { length: pixel_count }).map(Function.call, Number),
                 datasets: [
+
                     {
                         label: 'Red',
+
                         lineTension: 0.1,
                         backgroundColor: 'rgba(255,0,0,0.3)',
                         borderColor: 'rgba(255,0,0,1)',
@@ -48,6 +50,7 @@ class DisplayPixelColorGraph extends React.Component {
                     },
                     {
                         label: 'Green',
+
                         lineTension: 0.1,
                         backgroundColor: 'rgba(0,255,0,0.3)',
                         borderColor: 'rgba(0,255,0,1)',
@@ -56,6 +59,7 @@ class DisplayPixelColorGraph extends React.Component {
                     },
                     {
                         label: 'Blue',
+
                         lineTension: 0.1,
                         backgroundColor: 'rgba(0,0,255,0.3)',
                         borderColor: 'rgba(0,0,255,1)',
@@ -65,45 +69,51 @@ class DisplayPixelColorGraph extends React.Component {
                 ],
             },
             chartOptions: {
+                plugins: {
+                    legend: {
+                      display: false
+                    },
+                    tooltips: { enabled: false },
+
+                    hover: { mode: null, animationDuration: 0 },
+                    elements: {
+                        line: {
+                            tension: 0 // disables bezier curves
+                        }
+                        },
+                  },
+
                 responsive: true,
                 maintainAspectRatio: false,
-                tooltips: { enabled: false },
-                hover: { mode: null, animationDuration: 0 },
+
+
+
                 animation: {
                     duration: 0,
                 },
                 responsiveAnimationDuration: 0,
                 scales: {
-                    xAxes: [
-                        {
-                            gridLines: {
-                                display: false,
-                            },
-                            ticks: {
-                                max: pixel_count,
-                                min: 0,
-                                maxTicksLimit: 7,
-                            },
+                    x:{
+
+                        suggestedMin: 0,
+                        suggestedMax: pixel_count,
+
+                        grid:{display:false},
+                        ticks: {
+                            display: false,
+
+                            maxTicksLimit: 7,
                         },
-                    ],
-                    yAxes: [
-                        {
-                            // stacked: true,
+                        },
+                    y: {
+                            //stacked: true,
+                            suggestedMin: 0,
+                            suggestedMax: 256,
                             ticks: {
                                 display: false,
-                                min: 0,
-                                max: 256,
-                                stepSize: 64,
                             },
-                            gridLines: {
-                                display: false,
-                                color: 'rgba(0, 0, 0, .125)',
-                            },
+                            grid:{display:false}
                         },
-                    ],
-                },
-                legend: {
-                    display: false,
                 },
             },
         };
